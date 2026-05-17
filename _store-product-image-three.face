@@ -1,0 +1,225 @@
+{% if page.template_vars.product_details_style == '10' %}
+  {% if product.images | size < 2 %} 
+    <div class="theme-image-rating">
+      <div class="theme-image-thumbnail">
+        <div class="theme-product-detail-image" data-zs-product-img-container>
+          <div class="theme-product-detail-image-inner" data-lightbox-container="prod_images_grid_{{product.product_id}}">
+            {% if product.images[0].is_placeholder_image %}
+            <picture>
+              <img alt="{{ product.images[0].alternate_text }}" width="600" height="600"
+                src="{{cdn_prefix_url}}{{ product.images[0].url }}{{cdn_suffix_url}}" data-detail-image="theme-detail-image-{{product.product_id}}"
+                data-lightbox-detailImage
+                data-fallback="{{ product.images[0].url }}"
+                onerror="handleFallBackForImage(this)">
+            </picture>
+            {% else %}
+            <picture>
+              <img alt="{{ product.images[0].alternate_text }}" width="600" height="600"
+                src="{{cdn_prefix_url}}{{ product.images[0].url }}/600x600{{cdn_suffix_url}}" data-detail-image="theme-detail-image-{{product.product_id}}"
+                data-lightbox-detailImage
+                data-fallback="{{ product.images[0].url }}/600x600"
+                onerror="handleFallBackForImage(this)">
+            </picture>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% if product.is_product_review_enabled %}
+        <div class="theme-rating-review-container">
+          <div class="theme-rating-review" data-comments-summary = "rating-only"></div>
+        </div>
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="theme-image-rating">
+      <div class="theme-image-thumbnail">
+        <div class="theme-product-detail-image" data-zs-product-img-container>
+          <div class="theme-product-detail-image-inner">
+            <div class="theme-image-overlay" data-theme-image-overlay="theme-image-overlay-{{product.product_id}}">
+              <div class="theme-image-loader"></div>
+            </div>
+
+            {% if product.images[0].is_placeholder_image %}
+              <picture>
+                <img alt="{{ product.images[0].alternate_text }}" width="200" height="200"
+                  src="{{cdn_prefix_url}}{{ product.images[0].url }}{{cdn_suffix_url}}" data-detail-image="theme-detail-image-{{product.product_id}}"
+                  data-lightbox-detailImage
+                  data-fallback="{{ product.images[0].url }}"
+                  onerror="handleFallBackForImage(this)">
+              </picture>
+            {% else %}
+              <picture>
+                <img alt="{{ product.images[0].alternate_text }}" width="200" height="200"
+                  src="{{cdn_prefix_url}}{{ product.images[0].url }}/600x600{{cdn_suffix_url}}" data-detail-image="theme-detail-image-{{product.product_id}}"
+                  data-lightbox-detailImage
+                  data-fallback="{{ product.images[0].url }}/600x600"
+                  onerror="handleFallBackForImage(this)">
+              </picture>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="theme-product-detail-thumbnail-container" data-lightbox-container="prod_images_grid_{{product.product_id}}" data-theme-thumbnail-container="theme-thumbnail-container-{{product.product_id}}" data-thumbnail-prod-id="{{product.product_id}}">
+          {% for image in product.images %}
+            <div class="theme-product-detail-thumbnail" onclick="showDetailImage(this)" data-thumbnail-active="{{ image.id }}"data-thumbnail="{{product.product_id}}" data-zs-image-id="{{ image.id }}" data-lightbox-thumbnail>
+              {% if image.is_placeholder_image %}
+              <picture>
+                <img alt="{{ image.alternate_text }}" data-image-resolution="{{cdn_prefix_url}}{{ image.url }}{{cdn_suffix_url}}"
+                  data-fallback-resolution="{{ image.url }}"
+                  data-zs-thumbnail-image src="{{cdn_prefix_url}}{{ image.url }}{{cdn_suffix_url}}"
+                  data-fallback="{{ image.url }}"
+                  onerror="handleFallBackForImage(this)">
+              </picture>
+              {% else %}
+              <picture>
+                <img alt="{{ image.alternate_text }}" data-image-resolution="{{cdn_prefix_url}}{{ image.url }}/300x300{{cdn_suffix_url}}"
+                  data-fallback-resolution="{{ image.url }}/600x600"
+                  data-zs-thumbnail-image src="{{cdn_prefix_url}}{{ image.url }}/300x300{{cdn_suffix_url}}"
+                  data-fallback="{{ image.url }}/300x300"
+                  onerror="handleFallBackForImage(this)">
+              </picture>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% if product.is_product_review_enabled %}
+        <div class="theme-rating-review-container">
+          <div class="theme-rating-review" data-comments-summary = "rating-only"></div>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+  
+{% else %}
+
+  {% if product.images | size < 2 %} 
+    <div class="theme-product-detail-image" data-zs-product-img-container>
+      <div class="theme-product-detail-image-inner" data-lightbox-container="prod_images_grid_{{product.product_id}}">
+        {% if product.images[0].is_placeholder_image %}
+        <picture>
+          <img rel="preload" as="image" width="500" height="500" alt="{{ product.images[0].alternate_text }}"
+            src="{{cdn_prefix_url}}{{ product.images[0].url }}{{cdn_suffix_url}}" data-detail-image="theme-detail-image-{{product.product_id}}"
+            data-lightbox-detailImage decode="async"
+            data-fallback="{{ product.images[0].url }}"           
+            onerror="handleFallBackForImage(this)">
+        </picture>
+        {% else %}
+        <picture>
+          <source 
+        srcset="
+          {{cdn_prefix_url}}{{ product.images[0].url }}/300x300{{cdn_suffix_url}} 300w, 
+          {{cdn_prefix_url}}{{ product.images[0].url }}/600x600{{cdn_suffix_url}} 600w, 
+          {{cdn_prefix_url}}{{ product.images[0].url }}/1200x1200{{cdn_suffix_url}} 1200w" 
+        sizes="(max-width: 768px) 300px, 600px">
+      <img rel="preload" as="image" width="500" height="500" alt="{{ product.images[0].alternate_text }}"
+            src="{{cdn_prefix_url}}{{ product.images[0].url }}/600x600{{cdn_suffix_url}}" data-detail-image="theme-detail-image-{{product.product_id}}"
+            data-lightbox-detailImage decode="async"
+            data-fallback="{{ product.images[0].url }}/600x600"
+            onerror="handleFallBackForImage(this)">
+        </picture>
+        {% endif %}
+      </div>
+    </div>
+
+  {% else %}
+    <div class="theme-product-detail-image" data-zs-product-img-container>
+      <div class="theme-product-detail-image-inner">
+        {% if page.template_vars.product_details_style == '05' || page.template_vars.product_details_style == '06' %}
+          <button class="theme-image-navigation theme-navigate-left" onclick="showPreviousImage()" aria-label="{{i18n.get("common.previous")}}">
+            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512" aria-hidden="true" focusable="false">
+              <style>svg { fill: #ffffff; }</style>
+              <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"></path>
+            </svg>
+          </button>
+        {% endif %}
+        <div class="theme-image-overlay" data-theme-image-overlay="theme-image-overlay-{{product.product_id}}">
+          <div class="theme-image-loader"></div>
+        </div>
+
+        {% if product.images[0].is_placeholder_image %}
+        <picture>
+          <img alt="{{ product.images[0].alternate_text }}"
+            src="{{cdn_prefix_url}}{{ product.images[0].url }}{{cdn_suffix_url}}" data-detail-image="theme-detail-image-{{product.product_id}}"
+            data-lightbox-detailImage
+            data-fallback="{{ product.images[0].url }}"
+            onerror="handleFallBackForImage(this)">
+        </picture>
+        {% else %}
+        <picture>
+          <img alt="{{ product.images[0].alternate_text }}"
+            src="{{cdn_prefix_url}}{{ product.images[0].url }}/600x600{{cdn_suffix_url}}" data-detail-image="theme-detail-image-{{product.product_id}}"
+            data-lightbox-detailImage
+            data-fallback="{{ product.images[0].url }}/600x600"
+            onerror="handleFallBackForImage(this)">
+        </picture>
+        {% endif %}
+        {% if page.template_vars.product_details_style == '05' || page.template_vars.product_details_style == '06' %}
+          <button class="theme-image-navigation theme-navigate-right" onclick="showNextImage()" aria-label="{{i18n.get("common.next")}}">
+            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512" aria-hidden="true" focusable="false">
+              <style>svg { fill: #ffffff; }</style>
+              <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"></path>
+            </svg>
+          </button>
+        {% elif page.template_vars.product_details_style == '07' %}
+          <div class="theme-navigation-button-area">
+            <button class="theme-image-navigation theme-navigate-left" onclick="showPreviousImage()" aria-label="{{i18n.get("common.previous")}}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 19 20" fill="none">
+                <g clip-path="url(#clip0_51_2337)">
+                  <path d="M15.2202 10.0588L3.86306 9.97019M3.86306 9.97019L8.08875 14.2623M3.86306 9.97019L8.15522 5.7445" stroke="#56534A" stroke-width="1.42474" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_51_2337">
+                    <rect width="12.8495" height="12.8495" fill="white" transform="translate(9.61328 0.929688) rotate(45.4471)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </button>
+            <button class="theme-image-navigation theme-navigate-right" onclick="showNextImage()" aria-label="{{i18n.get("common.next")}}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 19 20" fill="none">
+                <g clip-path="url(#clip0_51_2333)">
+                  <path d="M3.58255 10.0588L14.9397 9.97019M14.9397 9.97019L10.714 14.2623M14.9397 9.97019L10.6475 5.7445" stroke="#56534A" stroke-width="1.42474" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_51_2333">
+                    <rect width="12.8495" height="12.8495" fill="white" transform="matrix(-0.701568 0.712603 0.712603 0.701568 9.18945 0.929688)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="theme-product-detail-thumbnail-container" data-lightbox-container="prod_images_grid_{{product.product_id}}" data-theme-thumbnail-container="theme-thumbnail-container-{{product.product_id}}" data-thumbnail-prod-id="{{product.product_id}}">
+      {% for image in product.images %}
+        <div class="theme-product-detail-thumbnail" onclick="showDetailImage(this)" data-thumbnail-active="{{ image.id }}" data-thumbnail="{{product.product_id}}" data-zs-image-id="{{ image.id }}" data-lightbox-thumbnail>
+          {% if image.is_placeholder_image %}
+            <picture>
+              <img width="80" height="80" alt="{{ image.alternate_text }}" data-image-resolution="{{cdn_prefix_url}}{{ image.url }}{{cdn_suffix_url}}"
+                data-zs-thumbnail-image src="{{cdn_prefix_url}}{{ image.url }}{{cdn_suffix_url}}" decode="async"
+                data-fallback-resolution="{{ image.url }}"
+                data-fallback="{{ image.url }}"
+                onerror="handleFallBackForImage(this)">
+            </picture>
+          {% else %}
+            <picture>
+              <source 
+                srcset="
+                  {{cdn_prefix_url}}{{ image.url }}/80x80{{cdn_suffix_url}} 300w, 
+                  {{cdn_prefix_url}}{{ image.url }}/200x200{{cdn_suffix_url}} 600w, 
+                  {{cdn_prefix_url}}{{ image.url }}/400x400{{cdn_suffix_url}} 1200w" 
+                sizes="(max-width: 768px) 300px, 600px"> 
+              <img width="80" height="80" alt="{{ image.alternate_text }}" data-image-resolution="{{cdn_prefix_url}}{{ image.url }}/600x600{{cdn_suffix_url}}"
+                data-fallback-resolution="{{ image.url }}/600x600"
+                data-zs-thumbnail-image src="{{cdn_prefix_url}}{{ image.url }}/200x200{{cdn_suffix_url}}" data-fallback="{{ image.url }}/200x200" decode="async"
+                onerror="handleFallBackForImage(this)"/>
+            </picture>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+{% endif %}

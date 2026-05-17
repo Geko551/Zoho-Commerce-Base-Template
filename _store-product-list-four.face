@@ -1,0 +1,88 @@
+<select style="display: none;position:absolute;width:0px;height:0px" data-zs-variants>
+  {% for variant in product.variants %}
+    {% assign variant_options = variant.options %}
+    {% assign variant_option_identifiers = variant_options | map(attr="id") %}
+    {% assign variant_images = variant.images %}
+    {% assign variant_image_identifiers = variant_images | map(attr="id") %}
+    <option value='{{ variant.variant_id }}' data-zs-attributes='{{ variant_option_identifiers | json }}' data-zs-images='{{ variant_image_identifiers | json }}' data-zs-img-url='{{cdn_prefix_url}}{{variant_images[0].url}}/400x400{{cdn_suffix_url}}'></option>
+  {% endfor %}
+</select>
+
+<div class="theme-product-box-content">
+  <div class="theme-product-image-area {% if product.is_out_of_stock == true && page.template_vars.product_list_style == '07' %}theme-out-of-stock-img{% endif %} " data-zs-image-container>
+    <div class="theme-cta-wishlist-wrapper">
+      {% if product.is_out_of_stock == false %}
+        <div class="theme-product-quick-view">
+          <button type="button" data-zs-quick-view onclick="viewProductQuickLook(this)" data-zs-product-url="{{ product.url }}">{{i18n.get("product.label.quick_view")}}
+          </button>
+        </div>
+      {% endif %}
+      {% if product.is_out_of_stock == true && page.template_vars.product_list_style == '04' %}
+        <div class="theme-outofstock-overlay">
+          <div class="theme-ribbon-stock" data-zs-outofstock>{{i18n.get("product.message.out_of_stock")}}</div>
+        </div>
+      {% endif %}
+      <div class="theme-wishlist-icon">
+        {{ wishlistView("list", product, page ) }}
+      </div>
+    </div>
+    <div class="theme-product-ribbon-area" {% if product.on_sale && page.is_coupon_enabled && product.is_out_of_stock == false %} data-zs-hide-sale-on-hover  {% endif %}>
+      {% if page.is_coupon_enabled && product.is_out_of_stock == false %}
+        <div class="theme-prod-coupons-code-container" {% if product.on_sale %} data-on-sale {% endif %}>
+          <span class="theme-prod-coupons-code" data-list-coupon-code style="display:none"></span>
+       </div> 
+       <div class="theme-prod-coupons-container" style = "display:none" data-zs-coupon-product-id = "{{ product.product_id }}"></div>
+      {% endif %}
+      {% if product.on_sale %}
+        <div class="theme-product-sale-ribbon" data-zs-sale>
+          <span class='theme-sale-message'>{{i18n.get("product.message.sale")}}</span>
+        </div>
+      {% endif %}
+      {% if product.is_out_of_stock == true && page.template_vars.product_list_style == '04' %}
+        <div class="theme-ribbon-stock" data-zs-outofstock>{{i18n.get("product.message.out_of_stock")}}</div>
+      {% endif %}
+    </div>
+    {% include '_store-product-list-image-loader' %}
+    {% include '_store-product-list-image' %}
+   
+  </div>
+  <div class="theme-product-details-area">
+    <div class="theme-product-name-rating-price">
+       {% if product.is_product_review_enabled && page.template_vars.product_list_style == '04' %}
+        <div class="theme-brand-name-rating">
+            <div class="theme-brand-name"  data-zs-brand="{{ product.brand }}">{{product.brand}}</div>
+            <div class="theme-rating" data-zs-review-id = "{{ product.review_id }}" data-zs-review-type = "star-rating"></div>
+        </div>
+      {% endif %}
+      <div class="theme-product-name" data-zs-product-name>
+        <a title="{{ product.name }}" title="{{ product.name }}" href="{{ product.url }}">{{ product.name }}</a>
+      </div>
+      {% if page.template_vars.product_list_style == '07' %}
+        {% if product.short_description %}
+          <div class="theme-product-short-description" data-zs-product-short-description>
+            {{ product.short_description }}
+          </div>
+        {% endif %}
+        {% if product.is_product_review_enabled %}
+          <div class="theme-rating" data-zs-review-id = "{{ product.review_id }}" data-zs-review-type = "star-rating"></div>
+        {% endif %}
+      {% endif %}
+      <div class = "theme-product-price-variants">
+        <div class="theme-product-price">
+          {% if page.template_vars.product_list_style == '07' %}
+            {% if product.is_out_of_stock == true %}
+              <div class="theme-ribbon-stock" data-zs-outofstock>{{i18n.get("product.message.out_of_stock")}}</div>
+            {% else %}
+              {% include '_store-product-pricing-one' %}
+            {% endif %}
+          {% else %}
+            {% include '_store-product-pricing-one' %}
+          {% endif %}
+        </div>
+        {% if page.template_vars.product_list_style == '04' %}
+            {% include '_store-product-list-variants' %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
