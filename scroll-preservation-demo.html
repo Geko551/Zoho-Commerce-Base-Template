@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Position Preservation Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .demo-section h3 {
+            color: #555;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .button.secondary {
+            background: #6c757d;
+        }
+        .button.secondary:hover {
+            background: #545b62;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .scroll-content {
+            height: 800px;
+            background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
+                        linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #666;
+            margin: 20px 0;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .feature h4 {
+            margin-top: 0;
+            color: #333;
+        }
+        .feature p {
+            color: #666;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Scroll Position Preservation Demo</h1>
+        
+        <div class="demo-section">
+            <h3>What This Script Does</h3>
+            <p>This script automatically preserves scroll position when navigating between listing pages and product detail pages in your e-commerce template. Here's how it works:</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h4>🎯 Smart Detection</h4>
+                    <p>Automatically detects if you're on a listing page (category, collection, search) or product page</p>
+                </div>
+                <div class="feature">
+                    <h4>💾 Position Storage</h4>
+                    <p>Stores scroll position before navigating to a product page</p>
+                </div>
+                <div class="feature">
+                    <h4>🔄 Position Restoration</h4>
+                    <p>Restores scroll position when returning via browser back button</p>
+                </div>
+                <div class="feature">
+                    <h4>📱 Mobile Friendly</h4>
+                    <p>Works on all devices and handles mobile app navigation</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>How to Use</h3>
+            <p>The script is automatically included in your template and works out of the box. However, you can also use the provided API functions:</p>
+            
+            <div class="code-block">
+// Check if scroll position is stored
+if (window.zpScrollPreservation.hasStoredPosition()) {
+    console.log('Scroll position available');
+}
+
+// Manually store current scroll position
+window.zpScrollPreservation.storePosition();
+
+// Manually restore scroll position
+window.zpScrollPreservation.restorePosition();
+
+// Get current scroll position
+const currentPos = window.zpScrollPreservation.getCurrentPosition();
+
+// Enhanced back navigation
+window.zpGoBack();
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Demo Controls</h3>
+            <p>Test the scroll preservation functionality:</p>
+            
+            <button class="button" onclick="simulateProductNavigation()">🚀 Simulate Product Navigation</button>
+            <button class="button secondary" onclick="simulateBackNavigation()">⬅️ Simulate Back Navigation</button>
+            <button class="button" onclick="checkStatus()">📊 Check Status</button>
+            <button class="button secondary" onclick="clearStorage()">🗑️ Clear Storage</button>
+            
+            <div id="status" class="status" style="display: none;"></div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Scrollable Content (Demo)</h3>
+            <p>Scroll down to simulate being on a listing page, then use the controls above:</p>
+            
+            <div class="scroll-content">
+                <div style="text-align: center;">
+                    <h2>📜 Listing Page Content</h2>
+                    <p>This represents a product listing page</p>
+                    <p>Scroll down to see more content...</p>
+                    <p>Your scroll position will be preserved!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Implementation Details</h3>
+            <p>The script is integrated into your existing <code>custom.js</code> file and provides:</p>
+            <ul>
+                <li><strong>Automatic Detection:</strong> Identifies page types using <code>window.zs_view</code> and URL patterns</li>
+                <li><strong>Performance Optimized:</strong> Throttled scroll events and efficient storage</li>
+                <li><strong>Cross-Browser Compatible:</strong> Works on all modern browsers</li>
+                <li><strong>SPA Ready:</strong> Handles dynamic page changes and history manipulation</li>
+                <li><strong>Mobile Optimized:</strong> Works with mobile apps and visibility changes</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h3>Browser Support</h3>
+            <p>This script works on all modern browsers that support:</p>
+            <ul>
+                <li>ES6+ features (const, let, arrow functions)</li>
+                <li>sessionStorage API</li>
+                <li>MutationObserver API</li>
+                <li>History API</li>
+                <li>Page Visibility API</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Demo functions
+        function simulateProductNavigation() {
+            // Store current scroll position
+            if (window.zpScrollPreservation) {
+                window.zpScrollPreservation.storePosition();
+                showStatus('Scroll position stored! Navigate to a product page and then use back button.', 'success');
+            } else {
+                showStatus('Scroll preservation script not loaded yet.', 'info');
+            }
+        }
+
+        function simulateBackNavigation() {
+            // Simulate returning to listing page
+            if (window.zpScrollPreservation && window.zpScrollPreservation.hasStoredPosition()) {
+                window.zpScrollPreservation.restorePosition();
+                showStatus('Scroll position restored!', 'success');
+            } else {
+                showStatus('No stored scroll position found. Use "Simulate Product Navigation" first.', 'info');
+            }
+        }
+
+        function checkStatus() {
+            if (window.zpScrollPreservation) {
+                const hasPosition = window.zpScrollPreservation.hasStoredPosition();
+                const currentPos = window.zpScrollPreservation.getCurrentPosition();
+                showStatus(`Status: Has stored position: ${hasPosition}, Current position: ${currentPos}px`, 'info');
+            } else {
+                showStatus('Scroll preservation script not loaded.', 'info');
+            }
+        }
+
+        function clearStorage() {
+            if (window.zpScrollPreservation) {
+                sessionStorage.removeItem('zp_listing_scroll_position');
+                showStatus('Storage cleared!', 'success');
+            } else {
+                showStatus('Scroll preservation script not loaded.', 'info');
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Initialize demo
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus('Scroll preservation demo loaded! Use the controls above to test functionality.', 'info');
+        });
+    </script>
+</body>
+</html> 
